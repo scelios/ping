@@ -1,0 +1,6 @@
+*.o
+*.out
+ft_ping
+*.dSYM
+*.json
+.vscode
