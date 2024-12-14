@@ -1,8 +1,5 @@
 #include "ping.h"
-#include <math.h>
-/**
- * Calculate the round-trip time value for a received ICMP packet.
- */
+
 static int calcPacketRtt(struct icmphdr *icmph, struct rtt_node *new_rtt)
 {
 	struct timeval *t_send;
@@ -17,12 +14,7 @@ static int calcPacketRtt(struct icmphdr *icmph, struct rtt_node *new_rtt)
 	return 0;
 }
 
-/**
- * Calculate the round-trip time value for a received packet and add it at
- * the end of the linked list containing all the rtt values from previous
- * received ICMP packet.
- */
-struct rtt_node * rttsSaveNew(struct packinfo *pi, struct icmphdr *icmph)
+struct rtt_node * rttSaveNew(struct packinfo *pi, struct icmphdr *icmph)
 {
 	struct rtt_node *elem = pi->rtt_list;
 	struct rtt_node *new_rtt = NULL;
@@ -43,10 +35,7 @@ struct rtt_node * rttsSaveNew(struct packinfo *pi, struct icmphdr *icmph)
 	return new_rtt;
 }
 
-/**
- * Free all nodes of the linked list containing all the round-trip time valus.
- */
-void rttsClean(struct packinfo *pi)
+void rttClean(struct packinfo *pi)
 {
 	struct rtt_node *elem = pi->rtt_list;
 	struct rtt_node *tmp;
@@ -58,9 +47,6 @@ void rttsClean(struct packinfo *pi)
 	}
 }
 
-/**
- * Calculate the standard deviation based on average rtt.
- */
 void calcStddev(struct packinfo *pi, long nb_elem)
 {
 	struct rtt_node *elem = pi->rtt_list;
@@ -91,14 +77,13 @@ void calcStddev(struct packinfo *pi, long nb_elem)
 }
 
 /**
- * Fill the struct packinfo with several statistics calculated with round-trip
- * times from all received ICMP packets:
- *    - Minimum round-trip time value.
- *    - Maximum round-trip time value.
- *    - Average round-trip time value.
- *    - Standard deviation round-trip time value.
+Calculate:
+- Minimum round-trip time value.
+- Maximum round-trip time value.
+- Average round-trip time value.
+- Standard deviation round-trip time value.
  */
-void rttsCalcStats(struct packinfo *pi)
+void rttCalcStats(struct packinfo *pi)
 {
 	struct rtt_node *elem = pi->rtt_list;
 	long nb_elem = 0;

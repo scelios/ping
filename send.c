@@ -19,7 +19,7 @@ static unsigned short checksum(unsigned short *ptr, int nbytes) {
 	return (unsigned short) ~sum;
 }
 
-static int fill_icmp_echo_packet(uint8_t *buf, int packet_len)
+static int fillIcmpEchoPacket(uint8_t *buf, int packet_len)
 {
 	static int seq = 0;
 	struct icmphdr *hdr = (struct icmphdr *)buf;
@@ -41,7 +41,7 @@ int sendPacket(int sock_fd, const struct sockinfo *si, struct packinfo *pi)
 	ssize_t nb_bytes;
 	uint8_t buf[sizeof(struct icmphdr) + ICMP_BODY_SIZE] = {};
 
-	if (fill_icmp_echo_packet(buf, sizeof(buf)) == -1)
+	if (fillIcmpEchoPacket(buf, sizeof(buf)) == -1)
 		return -1;
 	nb_bytes = sendto(sock_fd, buf, sizeof(buf), 0, (const struct sockaddr *)&si->remote_addr, sizeof(si->remote_addr));
 	if (nb_bytes == -1)

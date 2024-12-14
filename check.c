@@ -49,9 +49,11 @@ int checkArgs(int a, char **b, char **host, struct options *opts)
 	int nbHost = 0;
 	for (int i = 1; i < a; i++)
 	{
-		if (b[i][0] == '-' && strlen(b[i]) > 1
-			&& parseOpts(b[i],opts) == false)
-			return -1;
+		if (b[i][0] == '-' && strlen(b[i]) > 1)
+		{
+			if (parseOpts(b[i],opts) == false) 
+				return -1;
+		}
 		else
 		{
 			nbHost++;

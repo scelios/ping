@@ -43,21 +43,21 @@ int main(int a, char **b)
 			if (sendPacket(sock_fd,&si,&pi) == -1)
 			{
 				close(sock_fd);
-				rttsClean(&pi);
+				rttClean(&pi);
 				exit(E_EXIT_ERR_HOST);
 			}
 			alarm(1);
 		}
-		// if (receive(sock_fd,&si,&pi) == -1)
-		// {
-		// 	close(sock_fd);
-			// rttsClean(&pi);
-		// 	exit(E_EXIT_ERR_HOST);
-		// }
+		if (recvPacket(sock_fd, &pi, &opts) == -1)
+		{
+			close(sock_fd);
+			rttClean(&pi);
+			exit(E_EXIT_ERR_HOST);
+		}
 	}
 	printEndInfo(&si, &pi);
 
 	close(sock_fd);
-	rttsClean(&pi);
+	rttClean(&pi);
 	return pi.nb_ok > 0 ? E_EXIT_OK : E_EXIT_ERR_HOST;
 }
